@@ -3,10 +3,15 @@
 #[macro_use]
 extern crate rocket;
 
+#[macro_use]
+extern crate diesel;
+
+pub mod auth;
 pub mod config;
 pub mod database;
 pub mod responses;
 
+mod models;
 mod routes;
 
 pub fn rocket_factory() -> Result<rocket::Rocket, String> {

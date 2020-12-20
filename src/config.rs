@@ -1,7 +1,33 @@
 use dotenv::dotenv;
 use rocket::config::{Config, Environment, Value};
+use rocket::fairing::AdHoc;
 use std::collections::HashMap;
 use std::env;
+
+const SECRET: &'static str = "8Xui8SN4mI+7egV/9dlfYYLGQJeEx4+DwmSQLwDVXJg=";
+
+pub const TOKEN_PREFIX: &'static str = "Token ";
+
+pub struct AppState {
+    pub secret: Vec<u8>,
+}
+
+impl AppState {
+    pub fn manage() -> AdHoc {
+        AdHoc::on_attach("Manage config", |rocket| {
+            let secret = env::var("SECRET_KEY").unwrap_or_else(|err| {
+                if cfg!(debug_assertions) {
+                    SECRET.to_string()
+                } else {
+                    panic!("No SECRET_KEY environment variable found: {:?}", err)
+                }
+            });
+            Ok(rocket.manage(AppState {
+                secret: secret.into_bytes(),
+            }))
+        })
+    }
+}
 
 pub fn get_rocket_config() -> Result<Config, String> {
     dotenv().ok();
