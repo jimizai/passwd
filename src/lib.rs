@@ -18,7 +18,8 @@ pub fn rocket_factory() -> Result<rocket::Rocket, String> {
     let rocket_config = config::get_rocket_config().unwrap();
     let rocket = rocket::custom(rocket_config)
         .attach(database::DbConn::fairing())
-        .mount("/", routes![routes::users::index])
+        .attach(config::AppState::manage())
+        .mount("/", routes![routes::users::index, routes::users::test])
         .register(catchers![
             routes::errors::bad_request_handler,
             routes::errors::not_fount_handler,

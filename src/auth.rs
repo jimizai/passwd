@@ -27,7 +27,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for Auth {
         if let Some(auth) = extract_auth_from_request(request, &state.secret) {
             Outcome::Success(auth)
         } else {
-            Outcome::Failure((Status::Forbidden, ()))
+            Outcome::Failure((Status::Unauthorized, ()))
         }
     }
 }
