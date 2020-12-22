@@ -1,5 +1,4 @@
 #![feature(proc_macro_hygiene, decl_macro)]
-#![recursion_limit = "128"]
 
 #[macro_use]
 extern crate rocket;
@@ -10,9 +9,9 @@ extern crate diesel;
 pub mod auth;
 pub mod config;
 pub mod database;
-pub mod responses;
-
+pub mod errors;
 pub mod models;
+pub mod responses;
 mod routes;
 pub mod schema;
 
@@ -29,10 +28,19 @@ pub fn rocket_factory() -> Result<rocket::Rocket, String> {
                 routes::users::users_login
             ],
         )
+        .mount(
+            "/passwords",
+            routes![
+                routes::passwords::store,
+                routes::passwords::update,
+                routes::passwords::delete
+            ],
+        )
         .register(catchers![
             routes::errors::bad_request_handler,
             routes::errors::not_fount_handler,
-            routes::errors::unauthorized_handler
+            routes::errors::unauthorized_handler,
+            routes::errors::validate_error_handler
         ]);
     Ok(rocket)
 }

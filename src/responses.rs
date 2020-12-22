@@ -87,6 +87,14 @@ pub fn accepted() -> APIResponse {
     }
 }
 
+pub fn validate_error() -> APIResponse {
+    APIResponse {
+        msg: String::from("validate error"),
+        data: json!(null),
+        code: 422,
+    }
+}
+
 pub fn bad_request() -> APIResponse {
     APIResponse {
         msg: String::from("bad request"),

@@ -1,13 +1,22 @@
 use crate::auth::Auth;
 use crate::config::AppState;
 use crate::database::DbConn;
-use crate::models::user::{LoginUser, User};
+use crate::models::user::User;
 use crate::responses::{ok, unauthorized, APIResponse};
 use crate::schema::users;
 use diesel::prelude::*;
 use rocket::State;
 use rocket_contrib::json;
 use rocket_contrib::json::Json;
+use serde::Deserialize;
+use validator_derive::Validate;
+
+#[derive(Deserialize, Debug, Validate)]
+pub struct LoginUser {
+    #[validate(email)]
+    pub email: String,
+    pub password: String,
+}
 
 #[post("/login", format = "json", data = "<user>")]
 pub fn users_login(user: Json<LoginUser>, conn: DbConn, state: State<AppState>) -> APIResponse {

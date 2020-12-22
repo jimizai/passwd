@@ -1,8 +1,7 @@
 #![allow(proc_macro_derive_resolution_fallback)]
 use crate::auth::Auth;
 use chrono::{Duration, Utc};
-use serde::{Deserialize, Serialize};
-use validator_derive::Validate;
+use serde::Serialize;
 
 #[derive(Queryable, Serialize)]
 pub struct User {
@@ -16,13 +15,6 @@ pub struct UserAuth<'a> {
     username: &'a str,
     email: &'a str,
     token: String,
-}
-
-#[derive(Deserialize, Debug, Validate)]
-pub struct LoginUser {
-    #[validate(email)]
-    pub email: String,
-    pub password: String,
 }
 
 impl User {
