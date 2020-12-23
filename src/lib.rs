@@ -35,6 +35,7 @@ pub fn rocket_factory() -> Result<rocket::Rocket, String> {
         .mount(
             "/passwords",
             routes![
+                routes::passwords::list,
                 routes::passwords::store,
                 routes::passwords::update,
                 routes::passwords::delete

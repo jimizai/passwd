@@ -12,5 +12,6 @@ table! {
       key -> Text,
       value -> Text,
       length -> Integer,
+      user_id -> Integer,
   }
 }
