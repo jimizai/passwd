@@ -10,14 +10,18 @@ pub mod auth;
 pub mod config;
 pub mod database;
 pub mod errors;
+pub mod middlewares;
 pub mod models;
 pub mod responses;
 mod routes;
 pub mod schema;
 
+use middlewares::timeout::Timer;
+
 pub fn rocket_factory() -> Result<rocket::Rocket, String> {
     let rocket_config = config::get_rocket_config().unwrap();
     let rocket = rocket::custom(rocket_config)
+        .attach(Timer::new())
         .attach(database::DbConn::fairing())
         .attach(config::AppState::manage())
         .mount(
