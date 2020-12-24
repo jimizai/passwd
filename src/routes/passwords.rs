@@ -36,10 +36,7 @@ pub fn list(params: Form<FindPasswords>, auth: Auth, conn: DbConn) -> Result<API
         .limit(limit)
         .load::<PasswordModel>(&*conn)
         .expect("Cannot load articles");
-    let total = passwords::table
-        .count()
-        .first::<i64>(&*conn)
-        .expect("Cannot load articles");
+    let total = passwords::table.count().first::<i64>(&*conn).unwrap_or(0);
     Ok(ok()
         .set_data(json!(passwords))
         .set_total(total)
