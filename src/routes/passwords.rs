@@ -27,7 +27,7 @@ pub struct FindPasswords {
 
 #[get("/?<params..>")]
 pub fn list(params: Form<FindPasswords>, auth: Auth, conn: DbConn) -> Result<APIResponse, Errors> {
-    let query = passwords::table.filter(passwords::id.eq(auth.id));
+    let query = passwords::table.filter(passwords::user_id.eq(auth.id));
     let current = params.current.unwrap_or(1);
     let limit = params.page_size.unwrap_or(10);
     let offset = (current - 1) * limit;
@@ -36,8 +36,14 @@ pub fn list(params: Form<FindPasswords>, auth: Auth, conn: DbConn) -> Result<API
         .limit(limit)
         .load::<PasswordModel>(&*conn)
         .expect("Cannot load articles");
-
-    Ok(ok().set_data(json!(passwords)).set_message("查询成功"))
+    let total = passwords::table
+        .count()
+        .first::<i64>(&*conn)
+        .expect("Cannot load articles");
+    Ok(ok()
+        .set_data(json!(passwords))
+        .set_total(total)
+        .set_message("查询成功"))
 }
 
 #[post("/", data = "<new_password>", format = "json")]

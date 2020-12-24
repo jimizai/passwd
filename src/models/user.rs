@@ -3,11 +3,12 @@ use crate::auth::Auth;
 use chrono::{Duration, Utc};
 use serde::Serialize;
 
-#[derive(Queryable, Serialize)]
+#[derive(Debug, Queryable, Serialize, PartialEq)]
 pub struct User {
     pub id: i32,
     pub username: String,
     pub email: String,
+    pub password: String,
 }
 
 #[derive(Serialize)]

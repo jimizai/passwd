@@ -1,8 +1,9 @@
 use crate::auth::Auth;
 use crate::config::AppState;
 use crate::database::DbConn;
+use crate::errors::{Errors, FieldValidator};
 use crate::models::user::User;
-use crate::responses::{ok, unauthorized, APIResponse};
+use crate::responses::{ok, APIResponse};
 use crate::schema::users;
 use diesel::prelude::*;
 use rocket::State;
@@ -14,21 +15,30 @@ use validator_derive::Validate;
 #[derive(Deserialize, Debug, Validate)]
 pub struct LoginUser {
     #[validate(email)]
-    pub email: String,
-    pub password: String,
+    pub email: Option<String>,
+    pub password: Option<String>,
 }
 
 #[post("/login", format = "json", data = "<user>")]
-pub fn users_login(user: Json<LoginUser>, conn: DbConn, state: State<AppState>) -> APIResponse {
+pub fn users_login(
+    user: Json<LoginUser>,
+    conn: DbConn,
+    state: State<AppState>,
+) -> Result<APIResponse, Errors> {
+    let user = user.into_inner();
+    let mut extractor = FieldValidator::validate(&user);
+    let email = extractor.extract("email", user.email);
+    let password = extractor.extract("password", user.password);
+    extractor.check()?;
+
     let user = users::table
-        .filter(users::email.eq(&user.email))
-        .first::<User>(&*conn);
-    let user = match user {
-        Ok(user) => user,
-        Err(_) => return unauthorized(),
-    };
-    ok().set_data(json!(user.to_user_auth(&state.secret)))
-        .set_message("登录成功")
+        .filter(users::email.eq(email).and(users::password.eq(password)))
+        .get_result::<User>(&*conn)
+        .expect("login error");
+
+    Ok(ok()
+        .set_data(json!(user.to_user_auth(&state.secret)))
+        .set_message("登录成功"))
 }
 
 #[get("/")]

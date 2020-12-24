@@ -4,7 +4,7 @@ use rocket::fairing::AdHoc;
 use std::collections::HashMap;
 use std::env;
 
-pub const TOKEN_PREFIX: &'static str = "Token ";
+pub const TOKEN_PREFIX: &'static str = "Bearer ";
 
 pub struct AppState {
     pub secret: Vec<u8>,

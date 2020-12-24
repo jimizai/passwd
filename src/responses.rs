@@ -5,6 +5,7 @@ use rocket::request::Request;
 use rocket::response::{Responder, Response};
 use rocket_contrib::json;
 use rocket_contrib::json::JsonValue;
+use serde_json::Value;
 use std::io::Cursor;
 
 extern crate chrono;
@@ -13,6 +14,7 @@ pub struct APIResponse {
     pub code: i16,
     pub data: JsonValue,
     pub msg: String,
+    pub total: Option<i64>,
 }
 
 impl APIResponse {
@@ -30,6 +32,11 @@ impl APIResponse {
         self.code = status;
         self
     }
+
+    pub fn set_total(mut self, total: i64) -> APIResponse {
+        self.total = Some(total);
+        self
+    }
 }
 
 fn date_now() -> i64 {
@@ -43,18 +50,22 @@ impl From<DieselError> for APIResponse {
             code: 500,
             data: json!(null),
             msg: String::from("Database Error"),
+            total: None,
         }
     }
 }
 
 impl<'r> Responder<'r> for APIResponse {
     fn respond_to(self, _request: &Request) -> Result<Response<'r>, Status> {
-        let body = json!({
+        let mut body = json!({
             "code": self.code,
             "data": self.data,
             "msg": self.msg,
-            "time": date_now()
+            "time": date_now(),
         });
+        if let Some(total) = self.total {
+            body["total"] = Value::Number(total.into());
+        }
         Response::build()
             .status(Status::Ok)
             .sized_body(Cursor::new(body.to_string()))
@@ -68,6 +79,7 @@ pub fn ok() -> APIResponse {
         msg: String::from("success"),
         data: json!(null),
         code: 200,
+        total: None,
     }
 }
 
@@ -76,6 +88,7 @@ pub fn created() -> APIResponse {
         msg: String::from("created"),
         data: json!(null),
         code: 200,
+        total: None,
     }
 }
 
@@ -84,6 +97,7 @@ pub fn accepted() -> APIResponse {
         msg: String::from("accepted"),
         data: json!(null),
         code: 403,
+        total: None,
     }
 }
 
@@ -92,6 +106,7 @@ pub fn validate_error() -> APIResponse {
         msg: String::from("validate error"),
         data: json!(null),
         code: 422,
+        total: None,
     }
 }
 
@@ -100,6 +115,7 @@ pub fn bad_request() -> APIResponse {
         msg: String::from("bad request"),
         data: json!(null),
         code: 400,
+        total: None,
     }
 }
 
@@ -108,6 +124,7 @@ pub fn unauthorized() -> APIResponse {
         msg: String::from("unauthorized"),
         data: json!(null),
         code: 401,
+        total: None,
     }
 }
 
@@ -116,6 +133,7 @@ pub fn forbidden() -> APIResponse {
         msg: String::from("forbidden"),
         data: json!(null),
         code: 403,
+        total: None,
     }
 }
 
@@ -124,6 +142,7 @@ pub fn not_found() -> APIResponse {
         msg: String::from("not found"),
         data: json!(null),
         code: 404,
+        total: None,
     }
 }
 
@@ -132,6 +151,7 @@ pub fn method_not_allowed() -> APIResponse {
         msg: String::from("method not allowed"),
         data: json!(null),
         code: 405,
+        total: None,
     }
 }
 
@@ -140,5 +160,6 @@ pub fn internal_server_error() -> APIResponse {
         msg: String::from("internal server error"),
         data: json!(null),
         code: 500,
+        total: None,
     }
 }
