@@ -1,0 +1,178 @@
+@import './mixin.scss';
+@import './constants.scss';
+
+.desktop-only {
+  @include mobile {
+    display: none;
+  }
+}
+
+.mobile-only {
+  @include desktop {
+    display: none;
+  }
+}
+.pointer {
+  cursor: pointer;
+}
+.ell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.show {
+  display: block;
+}
+
+.hide {
+  display: none;
+}
+
+.clearfix {
+  clear: both;
+}
+
+@font-face {
+  font-family: 'iconfont'; /* project id 1694582 */
+  src: url('//at.alicdn.com/t/font_1694582_slsko4ut3hf.eot');
+  src: url('//at.alicdn.com/t/font_1694582_slsko4ut3hf.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_1694582_slsko4ut3hf.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_1694582_slsko4ut3hf.woff') format('woff'),
+    url('//at.alicdn.com/t/font_1694582_slsko4ut3hf.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_1694582_slsko4ut3hf.svg#iconfont') format('svg');
+}
+
+.iconfont {
+  font-family: 'iconfont' !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.primary {
+  background: $primary-color !important;
+}
+
+.fo-white {
+  color: $white !important;
+}
+
+.fo-primary {
+  color: $primary-color !important;
+}
+
+.App {
+  @for $i from 1 to 25 {
+    .m-#{$i} {
+      margin: $i * 0.2rem !important;
+    }
+
+    .ml-#{$i} {
+      margin-left: $i * 0.2rem !important;
+    }
+
+    .mt-#{$i} {
+      margin-top: $i * 0.2rem !important;
+    }
+
+    .mr-#{$i} {
+      margin-right: $i * 0.2rem !important;
+    }
+
+    .mb-#{$i} {
+      margin-bottom: $i * 0.2rem !important;
+    }
+
+    .mx-#{$i} {
+      margin-left: $i * 0.2rem !important;
+      margin-right: $i * 0.2rem !important;
+    }
+
+    .my-#{$i} {
+      margin-top: $i * 0.2rem !important;
+      margin-bottom: $i * 0.2rem !important;
+    }
+
+    .p-#{$i} {
+      padding: $i * 0.2rem !important;
+    }
+
+    .pl-#{$i} {
+      padding-left: $i * 0.2rem !important;
+    }
+
+    .pt-#{$i} {
+      padding-top: $i * 0.2rem !important;
+    }
+
+    .pr-#{$i} {
+      padding-right: $i * 0.2rem !important;
+    }
+
+    .pb-#{$i} {
+      padding-bottom: $i * 0.2rem !important;
+    }
+
+    .px-#{$i} {
+      padding-left: $i * 0.2rem !important;
+      padding-right: $i * 0.2rem !important;
+    }
+
+    .py-#{$i} {
+      padding-top: $i * 0.2rem !important;
+      padding-bottom: $i * 0.2rem !important;
+    }
+  }
+}
+
+.text-color {
+  color: $text-color;
+}
+
+.text-light-color {
+  color: $text-light-color;
+}
+
+.text-lighter-color {
+  color: $text-lighter-color;
+}
+
+.text-color-white {
+  color: $white;
+}
+
+.text-primary-color {
+  color: $primary-color;
+}
+
+.text-vip-color {
+  color: $vip-color;
+}
+
+.bg-gray {
+  background: $gray-bg;
+}
+
+.bg-image {
+  background: $image-bg;
+}
+
+.text-pointer {
+  cursor: pointer;
+}
