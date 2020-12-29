@@ -1,28 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Switch, Route, HashRouter as Router, Redirect } from 'react-router-dom'
+import Home from './pages/Home/Home'
+import Login from './pages/Login/Login'
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <p>Hello Vite + React!</p>
-        <p>
-          <button onClick={() => setCount(count => count + 1)}>count is: {count}</button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+    <Switch>
+      <Route
+        exact
+        path="/"
+        component={Home}
+      />
+      <Route path="/login" component={Login} />
+      {/* <Route path="/404" component={NotFound} />
+      <Route path="*" component={NotFound} /> */}
+    </Switch>
+  </Router>
   );
 }
 

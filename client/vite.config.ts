@@ -7,6 +7,7 @@ import reactPlugin from "vite-plugin-react";
 const config: UserConfig = {
   jsx: "react",
   plugins: [reactPlugin],
+  port: 3001,
 };
 
 export default config;
