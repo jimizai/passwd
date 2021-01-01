@@ -10,6 +10,13 @@ const config: UserConfig = {
   port: 3001,
   optimizeDeps: {
     include: ['@material-ui/core/styles']
+  },
+  proxy: {
+    '/api': {
+      target: 'http://localhost:3000/',
+      changeOrigin: true,
+      ws: true
+    }
   }
 };
 
