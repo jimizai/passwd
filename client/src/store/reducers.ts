@@ -3,7 +3,7 @@ import { AnyAction } from 'redux';
 
 const INITITIAL_STATE = {
   token: '',
-  userName: '我也要选话事人'
+  userName: ''
 };
 
 export type defaultState = typeof INITITIAL_STATE;

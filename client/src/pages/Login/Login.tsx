@@ -1,6 +1,11 @@
 import React, { FC, useState, useCallback } from 'react';
 import { Button, TextField } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { RouteChildrenProps } from 'react-router-dom';
 import { matchEmail } from '../../utils/shared';
+import { login } from '../../api';
+import { useMutation } from '../../hooks';
+import { setUserInfo } from '../../store/actions';
 import './Login.scss';
 
 interface Form {
@@ -10,7 +15,10 @@ interface Form {
 
 type FormError = { [key in keyof Form]: boolean };
 
-const Login: FC = props => {
+const Login: FC<RouteChildrenProps> = props => {
+  const [doLogin] = useMutation(login);
+  const dispatch = useDispatch();
+
   const [form, setForm] = useState<Form>({
     email: '',
     password: ''
@@ -41,7 +49,15 @@ const Login: FC = props => {
       handleFormError({ password: false });
     }
 
-    console.log(form);
+    doLogin({
+      variables: form,
+      update(result) {
+        if (result!.code === 200) {
+          dispatch(setUserInfo(result!.data));
+          props.history.push('/');
+        }
+      }
+    });
   }, [form]);
 
   return (
