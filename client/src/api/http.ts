@@ -1,9 +1,10 @@
 import { AxiosInstance, AxiosStatic } from 'axios';
 import * as pathToRegExp from 'path-to-regexp';
+import { Response } from './interface';
 
 // 判断是否符合返回调用方的需求
-const isObjectHasAttr = (res: any) => {
-  return res?.data?.code === 200 ? res.data : null;
+const isObjectHasAttr = (res?: Partial<Response>): Response | null => {
+  return res?.code === 200 ? (res as Response) : null;
 };
 
 export type Method = 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'all';

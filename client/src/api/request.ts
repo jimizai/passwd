@@ -3,6 +3,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import HandlerExceptions from './handleExceptions';
 
 axios.defaults.timeout = 10000;
+axios.defaults.baseURL = '/api';
 
 axios.interceptors.request.use(
   (conf: AxiosRequestConfig) => {
@@ -18,9 +19,16 @@ axios.interceptors.response.use(
   error => Promise.reject(error)
 );
 
-export const createRequest = () => new BaseHttp(axios);
+const createRequest = () => {
+  return new BaseHttp(axios);
+};
 
-export const get = createRequest().get;
-export const post = createRequest().post;
-export const del = createRequest().delete;
-export const put = createRequest().put;
+const bindRequest = <T extends keyof BaseHttp, U extends BaseHttp[T]>(method: T): U => {
+  const request = createRequest();
+  return (request[method] as any).bind(request);
+};
+
+export const get = bindRequest('get');
+export const post = bindRequest('post');
+export const put = bindRequest('put');
+export const del = bindRequest('delete');
