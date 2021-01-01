@@ -5,7 +5,10 @@ interface UseQueryOptions<T, U> {
   update?: (val: U) => void;
 }
 
-const useQuery = <T, U>(excutor: (options: T) => Promise<U>, options: UseQueryOptions<T, U>) => {
+export const useQuery = <T, U>(
+  excutor: (options: T) => Promise<U>,
+  options: UseQueryOptions<T, U>
+) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<U | null>(null);
   const [error, setError] = useState<Error | null>(null);
@@ -29,5 +32,3 @@ const useQuery = <T, U>(excutor: (options: T) => Promise<U>, options: UseQueryOp
 
   return { loading, error, refetch, data };
 };
-
-export default useQuery;

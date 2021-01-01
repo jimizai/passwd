@@ -1,31 +1,39 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 
 interface UseMutationOptions<T, U> {
   variables: T;
   update?: (val: U) => void;
 }
 
-const useMutation = <T, U>(excutor: (val: T) => Promise<U>, options: UseMutationOptions<T, U>) => {
+export const useMutation = <T, U>(
+  excutor: (val: T) => Promise<U>,
+  options?: UseMutationOptions<T, U>
+): [
+  (updateOptions?: UseMutationOptions<T, U>) => void,
+  { loading: boolean; data: U | null; error: Error | null }
+] => {
+  const excutorRef = useRef(excutor);
+  const optionsRef = useRef(options);
+
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<U | null>(null);
   const [error, setError] = useState<Error | null>(null);
 
-  const refetch = useCallback(
-    (updateOptions?: UseMutationOptions<T, U>) => {
-      setLoading(true);
-      excutor(updateOptions?.variables || options.variables)
-        .then(result => {
-          setData(result);
-          const update = updateOptions?.update || options.update;
-          update?.(result);
-        })
-        .catch(err => setError(err))
-        .finally(() => setLoading(false));
-    },
-    [excutor, options]
-  );
+  const refetch = useCallback((updateOptions?: UseMutationOptions<T, U>) => {
+    if (updateOptions) {
+      optionsRef.current = updateOptions;
+    }
+    setLoading(true);
+    excutorRef
+      .current(optionsRef.current?.variables as T)
+      .then(result => {
+        setData(result);
+        const update = optionsRef.current?.update;
+        update?.(result);
+      })
+      .catch(err => setError(err))
+      .finally(() => setLoading(false));
+  }, []);
 
   return [refetch, { loading, data, error }];
 };
-
-export default useMutation;
