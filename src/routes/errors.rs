@@ -20,3 +20,8 @@ pub fn not_fount_handler() -> APIResponse {
 pub fn validate_error_handler() -> APIResponse {
     validate_error()
 }
+
+#[catch(500)]
+pub fn server_error_handler() -> &'static str {
+    "Whoops! Looks like we messed up."
+}
