@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Auth {
     pub exp: i64,
-    pub id: i32,
+    pub id: u32,
     pub username: String,
 }
 

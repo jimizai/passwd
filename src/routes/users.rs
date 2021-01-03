@@ -34,11 +34,14 @@ pub fn users_login(
     let user = users::table
         .filter(users::email.eq(email).and(users::password.eq(password)))
         .get_result::<User>(&*conn)
-        .expect("login error");
+        .ok();
 
-    Ok(ok()
-        .set_data(json!(user.to_user_auth(&state.secret)))
-        .set_message("登录成功"))
+    match user {
+        Some(user) => Ok(ok()
+            .set_data(json!(user.to_user_auth(&state.secret)))
+            .set_message("登录成功")),
+        None => err!(400, "Invalid email or password"),
+    }
 }
 
 #[get("/")]

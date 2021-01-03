@@ -65,14 +65,14 @@ pub fn store(
     diesel::insert_into(passwords::table)
         .values(&new_password)
         .execute(&*conn)
-        .map_err(|err| eprintln!("passwords::favorite: {}", err))
+        .map_err(|err| eprintln!("passwords::insert error: {}", err))
         .ok();
     Ok(ok().set_message("保存成功"))
 }
 
 #[put("/<id>", data = "<password>", format = "json")]
 pub fn update(
-    id: i32,
+    id: u32,
     password: Json<UpdatePassword>,
     conn: DbConn,
     auth: Auth,
@@ -88,7 +88,7 @@ pub fn update(
 }
 
 #[delete("/<id>")]
-pub fn delete(id: i32, conn: DbConn, auth: Auth) -> Result<APIResponse, Errors> {
+pub fn delete(id: u32, conn: DbConn, auth: Auth) -> Result<APIResponse, Errors> {
     diesel::delete(
         passwords::table.filter(passwords::id.eq(id).and(passwords::user_id.eq(auth.id))),
     )

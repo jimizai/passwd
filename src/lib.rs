@@ -25,7 +25,7 @@ pub fn rocket_factory() -> Result<rocket::Rocket, String> {
         .attach(Timer::new())
         .attach(database::DbConn::fairing())
         .attach(config::AppState::manage())
-        .mount("/", routes![routes::home::index, routes::home::file])
+        .mount("/", routes![routes::home::index])
         .mount(
             "/users",
             routes![

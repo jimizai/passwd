@@ -1,11 +1,14 @@
 #![allow(proc_macro_derive_resolution_fallback)]
 use crate::auth::Auth;
+use crate::schema::users;
 use chrono::{Duration, Utc};
 use serde::Serialize;
+use serde_derive::Deserialize;
 
-#[derive(Debug, Queryable, Serialize, PartialEq)]
+#[derive(Debug, Queryable, Serialize, Deserialize, Identifiable, PartialEq, AsChangeset)]
+#[table_name = "users"]
 pub struct User {
-    pub id: i32,
+    pub id: u32,
     pub username: String,
     pub email: String,
     pub password: String,
