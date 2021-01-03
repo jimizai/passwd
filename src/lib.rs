@@ -9,6 +9,7 @@ extern crate diesel;
 pub mod auth;
 pub mod config;
 pub mod database;
+#[macro_use]
 pub mod errors;
 pub mod middlewares;
 pub mod models;
@@ -24,7 +25,7 @@ pub fn rocket_factory() -> Result<rocket::Rocket, String> {
         .attach(Timer::new())
         .attach(database::DbConn::fairing())
         .attach(config::AppState::manage())
-        .mount("/", routes![routes::home::index])
+        .mount("/", routes![routes::home::index, routes::home::file])
         .mount(
             "/users",
             routes![
@@ -46,7 +47,8 @@ pub fn rocket_factory() -> Result<rocket::Rocket, String> {
             routes::errors::bad_request_handler,
             routes::errors::not_fount_handler,
             routes::errors::unauthorized_handler,
-            routes::errors::validate_error_handler
+            routes::errors::validate_error_handler,
+            routes::errors::server_error_handler
         ]);
     Ok(rocket)
 }
