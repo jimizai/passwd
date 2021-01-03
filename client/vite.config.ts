@@ -9,7 +9,12 @@ const config: UserConfig = {
   plugins: [reactPlugin],
   port: 3001,
   optimizeDeps: {
-    include: ['@material-ui/core/styles', 'path-to-regexp']
+    include: [
+      '@material-ui/core/styles',
+      'path-to-regexp',
+      '@material-ui/lab',
+      '@material-ui/lab/themeAugmentation'
+    ]
   },
   proxy: {
     '/api': {

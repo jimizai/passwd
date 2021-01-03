@@ -29,10 +29,13 @@ export const useMutation = <T, U>(
       .then(result => {
         setData(result);
         const update = optionsRef.current?.update;
+        setLoading(false);
         update?.(result);
       })
-      .catch(err => setError(err))
-      .finally(() => setLoading(false));
+      .catch(err => {
+        setLoading(false);
+        setError(err);
+      });
   }, []);
 
   return [refetch, { loading, data, error }];

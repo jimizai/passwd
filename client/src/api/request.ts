@@ -1,13 +1,14 @@
 import BaseHttp from './http';
 import axios, { AxiosRequestConfig } from 'axios';
 import HandlerExceptions from './handleExceptions';
+import store from '../store';
 
 axios.defaults.timeout = 10000;
 axios.defaults.baseURL = '/api';
 
 axios.interceptors.request.use(
   (conf: AxiosRequestConfig) => {
-    conf.headers.authentication = '';
+    conf.headers.authorization = `Bearer ${store.getState().token}`;
     return conf;
   },
   error => Promise.reject(error)

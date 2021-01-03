@@ -1,5 +1,5 @@
 import React, { FC, useRef, useState } from 'react';
-import { Route, Redirect, RouteComponentProps } from 'react-router-dom';
+import { Route, RouteComponentProps, Redirect } from 'react-router-dom';
 import {
   AppBar,
   Toolbar,
@@ -24,9 +24,9 @@ const Pages: FC<RouteComponentProps> = props => {
   const [open, setOpen] = useState<boolean>(false);
 
   const classes = useStyles();
-  // if (window.location.hash.indexOf('login') === -1 && !token) {
-  //   return <Redirect to='/login' />;
-  // }
+  if (window.location.hash.indexOf('login') === -1 && !token) {
+    return <Redirect to='/login' />;
+  }
 
   const handleLogout = () => {
     localStorage.clear();

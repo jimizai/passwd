@@ -1,2 +1,4 @@
 export const SET_USER_NAME = 'SET_USER_NAME';
 export const SET_TOKEN = 'SET_TOKEN';
+export const SET_GLOBAL_MESSGAE = 'SET_GLOBAL_MESSGAE';
+export const SET_GLOBAL_VISIBLE = 'SET_GLOBAL_VISIBLE';

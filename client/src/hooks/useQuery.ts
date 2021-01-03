@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 
 interface UseQueryOptions<T, U> {
   variables: T;
@@ -9,16 +9,19 @@ export const useQuery = <T, U>(
   excutor: (options: T) => Promise<U>,
   options: UseQueryOptions<T, U>
 ) => {
+  const execRef = useRef(excutor);
+  const optionsRef = useRef(options);
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<U | null>(null);
   const [error, setError] = useState<Error | null>(null);
 
   const refetch = useCallback(() => {
     setLoading(false);
-    excutor(options.variables)
+    execRef
+      .current(optionsRef.current.variables)
       .then(result => {
         setData(result);
-        options.update?.(result);
+        optionsRef.current.update?.(result);
       })
       .catch(err => setError(err))
       .finally(() => {

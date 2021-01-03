@@ -1,4 +1,6 @@
 import { Response } from './interface';
+import store from '../store';
+import { setGlobalMessage } from '../store/actions';
 // 处理异常
 const handleError = (res: Response): Response => {
   let errorMsg = '';
@@ -22,7 +24,7 @@ const handleError = (res: Response): Response => {
     }
   }
 
-  console.log(errorMsg);
+  store.dispatch(setGlobalMessage(errorMsg) as any);
 
   return res.data;
 };
