@@ -85,3 +85,10 @@ impl FieldValidator {
         })
     }
 }
+
+#[macro_export]
+macro_rules! err {
+    ($code:expr, $message: expr) => {{
+        return Ok(ok().set_status($code).set_message($message));
+    }};
+}
