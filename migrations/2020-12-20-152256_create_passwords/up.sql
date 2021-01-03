@@ -4,6 +4,7 @@ CREATE TABLE `passwords` (
   `value` varchar(100) NOT NULL DEFAULT '',
   `length` int(4) NOT NULL,
   `type` varchar(20) NOT NULL DEFAULT '',
+  `user_id` int(11) unsigned NOT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`)
