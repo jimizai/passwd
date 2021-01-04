@@ -11,6 +11,7 @@ pub struct PasswordModel {
     pub key: String,
     pub value: String,
     pub length: i32,
+    pub type_: String,
     pub user_id: u32,
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,
