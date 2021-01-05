@@ -1,0 +1,28 @@
+.password-form-wrapper {
+  .plus {
+    position: fixed;
+    right: 40px;
+    bottom: 40px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    .MuiButton-label {
+      font-size: 34px;
+      width: 40px;
+      height: 40px;
+    }
+  }
+}
+.MuiFormControl-root {
+  width: 100%;
+}
+
+.refresh-btn {
+  position: absolute;
+  right: 40px;
+  margin-top: 4px;
+}
+
+.mb-4 {
+  margin-bottom: 16px;
+}
