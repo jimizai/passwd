@@ -13,6 +13,7 @@ const config: UserConfig = {
       '@material-ui/core/styles',
       'path-to-regexp',
       '@material-ui/lab',
+      '@material-ui/icons',
       '@material-ui/lab/themeAugmentation'
     ]
   },
