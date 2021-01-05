@@ -16,7 +16,7 @@ export const useQuery = <T, U>(
   const [error, setError] = useState<Error | null>(null);
 
   const refetch = useCallback(() => {
-    setLoading(false);
+    setLoading(true);
     execRef
       .current(optionsRef.current.variables)
       .then(result => {
