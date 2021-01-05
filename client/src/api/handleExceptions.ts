@@ -1,6 +1,7 @@
 import { Response } from './interface';
 import store from '../store';
 import { setGlobalMessage } from '../store/actions';
+import { MessageType } from '../enums';
 // 处理异常
 const handleError = (res: Response): Response => {
   let errorMsg = '';
@@ -24,7 +25,7 @@ const handleError = (res: Response): Response => {
     }
   }
 
-  store.dispatch(setGlobalMessage(errorMsg) as any);
+  store.dispatch(setGlobalMessage({ type: MessageType.Error, message: errorMsg }) as any);
 
   return res.data;
 };

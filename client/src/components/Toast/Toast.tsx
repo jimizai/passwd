@@ -4,17 +4,23 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setGlobalMessage } from '../../store/actions';
 import { Alert } from '@material-ui/lab';
 import { defaultState } from 'store/reducers';
+import { MessageType } from '../../enums';
 
 const Toast = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const message = useSelector<defaultState, string>(state => state.message);
+  const { message, type } = useSelector<defaultState, { message: string; type: MessageType }>(
+    state => ({
+      message: state.message,
+      type: state.type as MessageType
+    })
+  );
   const dispatch = useDispatch();
   const timeout = useRef<any>(null);
 
   const handleClose = useCallback(() => {
     setOpen(false);
     setTimeout(() => {
-      dispatch(setGlobalMessage(''));
+      dispatch(setGlobalMessage({ type: MessageType.None, message: '' }));
     }, 100);
   }, []);
 
@@ -42,7 +48,7 @@ const Toast = () => {
       autoHideDuration={3000}
       onClose={handleClose}
     >
-      <Alert onClose={handleClose} severity='error'>
+      <Alert onClose={handleClose} severity={type as any}>
         {message}
       </Alert>
     </Snackbar>
