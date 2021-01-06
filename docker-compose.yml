@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  passwd-server:
+    build: .
+    restart: always
+    environment:
+      - DATABASE_URL=mysql://root:123456@192.168.1.108/passwd
+      - SECRET_KEY=8Xui8SN4mI+7egV/9dlfYYLGQJeEx4+DwmSQLwDVXJg=
+    ports:
+      - "3000:3000"
