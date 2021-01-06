@@ -39,7 +39,7 @@ pub fn users_login(
     match user {
         Some(user) => Ok(ok()
             .set_data(json!(user.to_user_auth(&state.secret)))
-            .set_message("登录成功")),
+            .set_message("login success")),
         None => err!(400, "Invalid email or password"),
     }
 }

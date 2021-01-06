@@ -40,7 +40,7 @@ pub fn list(params: Form<FindPasswords>, auth: Auth, conn: DbConn) -> Result<API
     Ok(ok()
         .set_data(json!(passwords))
         .set_total(total)
-        .set_message("查询成功"))
+        .set_message("success"))
 }
 
 #[post("/", data = "<new_password>", format = "json")]
@@ -67,7 +67,7 @@ pub fn store(
         .execute(&*conn)
         .map_err(|err| eprintln!("passwords::insert error: {}", err))
         .ok();
-    Ok(ok().set_message("保存成功"))
+    Ok(ok().set_message("success"))
 }
 
 #[put("/<id>", data = "<password>", format = "json")]
@@ -84,7 +84,7 @@ pub fn update(
     .set(data)
     .execute(&*conn)
     .ok();
-    Ok(ok().set_message("修改成功"))
+    Ok(ok().set_message("success"))
 }
 
 #[delete("/<id>")]
@@ -94,5 +94,5 @@ pub fn delete(id: u32, conn: DbConn, auth: Auth) -> Result<APIResponse, Errors> 
     )
     .execute(&*conn)
     .ok();
-    Ok(ok().set_message("删除成功"))
+    Ok(ok().set_message("success"))
 }
