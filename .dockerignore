@@ -1,0 +1,18 @@
+client
+target
+
+# Data folder
+data
+.env
+
+# IDE files
+.vscode
+.idea
+*.iml
+
+# Documentation
+.github
+*.md
+*.txt
+*.yml
+*.yaml
