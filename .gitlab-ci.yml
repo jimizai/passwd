@@ -16,7 +16,7 @@ build_image:
     - docker
   script:
     - docker build -t passwd .
-    - docker image push $REGISTRY_URL/passwd:latest
+    - docker image push ${REGISTRY_URL}/passwd:latest
   only:
     - master
 
@@ -25,7 +25,7 @@ deploy_image:
   tags:
     - ssh
   script:
-    - docker pull $REGISTRY_URL/passwd:latest
-    - docker run -p 3000:3000 --name passwd -e DATABASE_URL="$DATABASE_URL" -e SECRET_KEY="$SECRET_KEY" passwd:latest
+    - docker pull ${REGISTRY_URL}/passwd:latest
+    - docker run -p 3000:3000 --name passwd -e DATABASE_URL="${DATABASE_URL}" -e SECRET_KEY="${SECRET_KEY}" passwd:latest
   only:
     - master
