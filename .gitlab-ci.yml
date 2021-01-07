@@ -3,16 +3,29 @@ image: docker:latest
 services:
   - docker:dind
 
+variables:
+  DOCKER_DRIVER: overlay2
+
 stages:
   - Build
+  - Deploy
 
-test_build:
+build_image:
   stage: Build
   tags:
     - docker
   script:
-    - docker ps
     - docker build -t passwd .
-    - docker image push 192.168.1.108:5000/passwd:latest
+    - docker image push $REGISTRY_URL/passwd:latest
+  only:
+    - master
+
+deploy_image:
+  stage: Deploy
+  tags:
+    - ssh
+  script:
+    - docker pull $REGISTRY_URL/passwd:latest
+    - docker run -p 3000:3000 --name passwd -e DATABASE_URL="$DATABASE_URL" -e SECRET_KEY="$SECRET_KEY" passwd:latest
   only:
     - master
