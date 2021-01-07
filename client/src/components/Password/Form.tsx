@@ -33,7 +33,7 @@ const PasswordForm: FC<P> = props => {
   };
 
   const resetForm = useCallback(() => {
-    setForm(data => data.map(item => ({ ...item, value: '' })));
+    setForm(data => data.map(item => ({ ...item, value: '', error: false })));
   }, []);
 
   const handleSubmit = useCallback(() => {
@@ -74,45 +74,43 @@ const PasswordForm: FC<P> = props => {
       >
         <DialogTitle id='alert-dialog-title'>Edit Password Form</DialogTitle>
         <DialogContent>
-          <DialogContentText id='alert-dialog-description'>
-            {form.map((item, index) => (
-              <TextField
-                key={index}
-                required
-                value={item.value}
-                onChange={e => {
-                  setForm(data =>
-                    data.map((item, indd) =>
-                      indd === index ? { ...item, value: e.target.value } : item
-                    )
-                  );
-                }}
-                className='mb-4'
-                error={item.error}
-                label={item.label}
-                variant='outlined'
-                helperText={item.error ? `${item.label} is invalid` : ''}
-              />
-            ))}
-            <IconButton
-              className='refresh-btn'
-              onClick={() => {
+          {form.map((item, index) => (
+            <TextField
+              key={index}
+              required
+              value={item.value}
+              onChange={e => {
                 setForm(data =>
-                  data.map((item, indd) => {
-                    if (indd === 1) {
-                      return {
-                        ...item,
-                        value: randomStr()
-                      };
-                    }
-                    return item;
-                  })
+                  data.map((item, indd) =>
+                    indd === index ? { ...item, value: e.target.value } : item
+                  )
                 );
               }}
-            >
-              <Refresh />
-            </IconButton>
-          </DialogContentText>
+              className='mb-4'
+              error={item.error}
+              label={item.label}
+              variant='outlined'
+              helperText={item.error ? `${item.label} is invalid` : ''}
+            />
+          ))}
+          <IconButton
+            className='refresh-btn'
+            onClick={() => {
+              setForm(data =>
+                data.map((item, indd) => {
+                  if (indd === 1) {
+                    return {
+                      ...item,
+                      value: randomStr()
+                    };
+                  }
+                  return item;
+                })
+              );
+            }}
+          >
+            <Refresh />
+          </IconButton>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSubmit} color='primary'>
