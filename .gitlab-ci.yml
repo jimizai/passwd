@@ -13,6 +13,8 @@ stages:
 
 test_build:
   stage: Build
+  tags:
+    - docker
   script:
     - docker ps
     - docker build -t passwd .
