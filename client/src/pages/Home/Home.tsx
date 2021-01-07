@@ -1,19 +1,16 @@
 import React, { FC, useCallback } from 'react';
 import Password from '../../components/Password/Password';
 import PasswordForm from '../../components/Password/Form';
-import { TypographyProps, Typography } from '@material-ui/core';
-import { Skeleton } from '@material-ui/lab';
 import { getPasswords, createPassword, delPassword } from '../../api';
 import { useQuery, useMutation } from '../../hooks';
 import { setGlobalMessage } from '../../store/actions';
 import { MessageType } from '../../enums';
 import { useDispatch } from 'react-redux';
+import dayjs from 'dayjs';
 import './Home.scss';
 
-const variants = ['h1', 'h3', 'body1', 'caption'] as TypographyProps['variant'][];
-
 const Home: FC = () => {
-  const { loading, data, refetch } = useQuery(getPasswords, {
+  const { data, refetch } = useQuery(getPasswords, {
     variables: {
       current: 1,
       page_size: 10
@@ -35,20 +32,6 @@ const Home: FC = () => {
     });
   }, []);
 
-  if (loading) {
-    return (
-      <div>
-        {Array.from({ length: 4 }).map((_, index) =>
-          variants.map(variant => (
-            <Typography component='div' key={`${index} ${variant}`} variant={variant}>
-              <Skeleton />
-            </Typography>
-          ))
-        )}
-      </div>
-    );
-  }
-
   return (
     <div className='password-wrapper'>
       <PasswordForm
@@ -65,7 +48,11 @@ const Home: FC = () => {
         }}
       />
       {data?.data
-        .map((item: any) => ({ ...item, title: item.key, createdAt: item.created_at }))
+        .map((item: any) => ({
+          ...item,
+          title: item.key,
+          createdAt: dayjs(item.created_at).format('YYYY-MM-DD HH:mm:ss')
+        }))
         .map((password: any, key: number) => (
           <div className='password-item' key={key}>
             <Password {...password} onDelete={handleDelete} />

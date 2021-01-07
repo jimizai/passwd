@@ -9,7 +9,7 @@ import {
   TextField,
   IconButton
 } from '@material-ui/core';
-import { Refresh } from '@material-ui/icons';
+import { Refresh, Add } from '@material-ui/icons';
 import { randomStr } from '../../utils';
 import './Form.scss';
 
@@ -31,6 +31,10 @@ const PasswordForm: FC<P> = props => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const resetForm = useCallback(() => {
+    setForm(data => data.map(item => ({ ...item, value: '' })));
+  }, []);
 
   const handleSubmit = useCallback(() => {
     let match = false;
@@ -54,12 +58,13 @@ const PasswordForm: FC<P> = props => {
     };
     props.onSubmit(params);
     setOpen(false);
+    resetForm();
   }, [form]);
 
   return (
     <div className='password-form-wrapper'>
       <Button className='plus' variant='contained' color='primary' onClick={handleClickOpen}>
-        +
+        <Add />
       </Button>
       <Dialog
         open={open}

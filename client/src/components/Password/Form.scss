@@ -1,10 +1,11 @@
 .password-form-wrapper {
   .plus {
     position: fixed;
-    right: 40px;
-    bottom: 40px;
-    width: 80px;
-    height: 80px;
+    z-index: 100;
+    right: 20px;
+    bottom: 20px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     .MuiButton-label {
       font-size: 34px;
