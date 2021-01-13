@@ -39,6 +39,15 @@ pub fn users_signup(user: Json<SignupUser>, conn: DbConn) -> Result<APIResponse,
     let username = extractor.extract("username", user.username);
     let password = extractor.extract("password", user.password);
     extractor.check()?;
+
+    let match_user = users::table
+        .filter(users::email.eq(&email).or(users::username.eq(&username)))
+        .first::<User>(&*conn)
+        .ok()
+        .is_some();
+    if match_user {
+        err!(400, "User is exist");
+    }
     let salt: Vec<u8> = get_random_64();
     let password = hash_password(password.as_bytes(), &salt, PASSWORD_ITERATIONS as u32);
     let new_user = NewUser {
