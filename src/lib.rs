@@ -17,6 +17,8 @@ pub mod responses;
 mod routes;
 pub mod schema;
 
+pub mod crypto;
+
 use middlewares::timeout::Timer;
 
 pub fn rocket_factory() -> Result<rocket::Rocket, String> {
@@ -31,7 +33,8 @@ pub fn rocket_factory() -> Result<rocket::Rocket, String> {
             routes![
                 routes::users::index,
                 routes::users::test,
-                routes::users::users_login
+                routes::users::users_login,
+                routes::users::users_signup
             ],
         )
         .mount(
