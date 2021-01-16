@@ -11,8 +11,8 @@ pub struct User {
     pub id: u32,
     pub username: String,
     pub email: String,
-    pub password: Vec<u8>,
     pub salt: Vec<u8>,
+    pub password: Vec<u8>,
 }
 
 #[derive(Insertable, Debug)]
@@ -20,8 +20,8 @@ pub struct User {
 pub struct NewUser<'a> {
     pub username: &'a str,
     pub email: &'a str,
-    pub password: Vec<u8>,
     pub salt: Vec<u8>,
+    pub password: Vec<u8>,
 }
 
 #[derive(Serialize)]
