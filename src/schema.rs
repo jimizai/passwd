@@ -97,7 +97,4 @@ table! {
     }
 }
 
-allow_tables_to_appear_in_same_query!(
-    passwords,
-    users,
-);
+allow_tables_to_appear_in_same_query!(passwords, users,);
