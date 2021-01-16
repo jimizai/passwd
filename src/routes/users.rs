@@ -18,8 +18,7 @@ const PASSWORD_ITERATIONS: i32 = 100_000;
 
 #[derive(Deserialize, Debug, Validate)]
 pub struct LoginUser {
-    #[validate(email)]
-    pub email: Option<String>,
+    pub username: Option<String>,
     pub password: Option<String>,
 }
 
@@ -72,12 +71,11 @@ pub fn users_login(
 ) -> Result<APIResponse, Errors> {
     let user = user.into_inner();
     let mut extractor = FieldValidator::validate(&user);
-    let email = extractor.extract("email", user.email);
+    let username = extractor.extract("username", user.username);
     let password = extractor.extract("password", user.password);
     extractor.check()?;
-
     let user = users::table
-        .filter(users::email.eq(email))
+        .filter(users::email.eq(&username).or(users::username.eq(&username)))
         .get_result::<User>(&*conn)
         .ok();
 
