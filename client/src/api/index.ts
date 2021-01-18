@@ -16,3 +16,6 @@ export const updatePassword = (params: {
 export const delPassword = (params: { id: number }) => del('/passwords/:id', params);
 
 export const login = (params: { email: string; password: string }) => post('/users/login', params);
+
+export const signup = (params: { email: string; password: string; username: string }) =>
+  post('/users/signup', params);

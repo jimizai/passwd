@@ -31,7 +31,11 @@ pub struct SignupUser {
 }
 
 #[post("/signup", format = "json", data = "<user>")]
-pub fn users_signup(user: Json<SignupUser>, conn: DbConn) -> Result<APIResponse, Errors> {
+pub fn users_signup(
+    user: Json<SignupUser>,
+    conn: DbConn,
+    state: State<AppState>,
+) -> Result<APIResponse, Errors> {
     let user = user.into_inner();
     let mut extractor = FieldValidator::validate(&user);
     let email = extractor.extract("email", user.email);
@@ -60,7 +64,17 @@ pub fn users_signup(user: Json<SignupUser>, conn: DbConn) -> Result<APIResponse,
         .execute(&*conn)
         .map_err(|err| eprintln!("users::insert error: {}", err))
         .ok();
-    Ok(ok().set_message("sign up success"))
+    let user = users::table
+        .filter(users::email.eq(&email))
+        .get_result::<User>(&*conn)
+        .ok();
+    if let Some(user) = user {
+        Ok(ok()
+            .set_data(json!(user.to_user_auth(&state.secret)))
+            .set_message("login success"))
+    } else {
+        err!(400, "Sign up error")
+    }
 }
 
 #[post("/login", format = "json", data = "<user>")]
